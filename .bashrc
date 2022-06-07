@@ -42,16 +42,15 @@ fi
 # install pnpm
 if ! which pnpm &> /dev/null; then
   curl -fsSL https://get.pnpm.io/install.sh | sh - 2>&1
-  # check again, setup node 16.15.0 if pnpm is found
-  which pnpm &>/dev/null && pnpm env -g use "16.15.0" 2>/dev/null
+  # double check that pnpm is installed, then install/setup node v16.15.0
+  which pnpm &>/dev/null && pnpm env use --global "16.15.0" 2>/dev/null
 fi
 
 # 
 if which brew &>/dev/null; then
   eval "$(brew shellenv)"
   
-  # .Brewfile
-  # starship cross-shell prompt
+  # [see .Brewfile] install starship prompt and other goodies
   if ! which starship &>/dev/null && [ -r "$HOME/.Brewfile" ]; then
     brew bundle install --global 2>/dev/null
   fi
