@@ -26,7 +26,7 @@ brew "fzf"
 # GNU compiler collection
 brew "gcc"
 # GitHub command-line tool
-# brew "gh"
+brew "gh"
 # Distributed revision control system
 # brew "git"
 # Small git utilities
