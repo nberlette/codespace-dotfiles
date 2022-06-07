@@ -12,39 +12,39 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 tap "supabase/tap"
 # Bourne-Again SHell, a UNIX command interpreter
-brew "bash"
+# brew "bash"
 # Cross-platform make
 brew "cmake"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # Collection of Linux utilities
-brew "util-linux"
+# brew "util-linux"
 # Pack, ship and run any application as a lightweight container
-brew "docker"
+# brew "docker"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU compiler collection
 brew "gcc"
 # GitHub command-line tool
-brew "gh"
+# brew "gh"
 # Distributed revision control system
-brew "git"
+# brew "git"
 # Small git utilities
 brew "git-extras"
 # Command-line interface for SQLite
-brew "sqlite"
+# brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
+# brew "python@3.9"
 # Core application library for C
 brew "glib"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
 # Library for USB device access
-brew "libusb"
+# brew "libusb"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
-brew "go"
+# brew "go"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Rainbows and unicorns in your console!
@@ -56,7 +56,7 @@ brew "neovim"
 # Generic syntax highlighter
 brew "pygments"
 # Utility that provides fast incremental file transfer
-brew "rsync"
+# brew "rsync"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Autoformat shell script source code
