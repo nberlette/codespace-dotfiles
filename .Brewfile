@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------------ ##
-##  .Brewfile                                Nicholas Berlette, 2022-05-31  ##
+##  .Brewfile                                Nicholas Berlette, 2022-06-07  ##
 ## ------------------------------------------------------------------------ ##
-##        https://github.com/nberlette/dotfiles/blob/main/.Brewfile         ##
+##   https://github.com/nberlette/codespace-dotfiles/blob/main/.Brewfile    ##
 ## ------------------------------------------------------------------------ ##
 ##              MIT © Nicholas Berlette <nick@berlette.com>                 ##
 ## ------------------------------------------------------------------------ ##
