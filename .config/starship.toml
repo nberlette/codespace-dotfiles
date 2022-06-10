@@ -1,12 +1,13 @@
 # "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '$time$directory$sudo$git_branch$git_status$git_metrics$git_state$git_commit$hg_branch$package$nodejs$docker_context$golang$deno$php$python$ruby$rust$line_break$status$character'
-right_format = '$memory_usage$status$jobs$cmd_duration'
+format = '$time$sudo$directory$hg_branch$git_branch$git_status$git_metrics$git_state$git_commit$package$nodejs$docker_context$golang$deno$php$python$ruby$rust$line_break$jobs$status$character'
+
+right_format = '$memory_usage$cmd_duration'
 
 continuation_prompt = '[ › ](bright-black) '
 scan_timeout = 30
-command_timeout = 1000
-add_newline = false
+command_timeout = 1500
+add_newline = true
 
 #######################################################################
 #  CORE MODULES
@@ -14,7 +15,7 @@ add_newline = false
 
 [time]
 disabled = false
-format = '(⌚ [$time]($style) [·](dimmed $style) )'
+format = '([$time]($style) ⌚ )'
 style = 'blue dimmed'
 use_12hr = true
 utc_time_offset = 'local'
@@ -125,8 +126,8 @@ use_os_path_sep = true
 [directory.substitutions]
 
 [memory_usage]
-threshold = 40
-format = '(· $symbol[$ram( | $swap)]($style) )'
+threshold = 30
+format = '(· $symbol[$ram]($style) )'
 style = 'white bold dimmed'
 symbol = '🐏 '
 disabled = false
@@ -150,7 +151,7 @@ style = 'bold yellow'
 
 [package]
 disabled = false
-format = '([·](dimmed $style) $symbol[$version](underline $style) )'
+format = '( $symbol[$version](underline $style) )'
 symbol = '📦 '
 style = '99'
 display_private = true
@@ -161,6 +162,13 @@ disabled = false
 format = '[$symbol \[$name\]]($style) '
 symbol = '🫙'
 style = 'red bold dimmed'
+
+[hostname]
+ssh_only = true
+disabled = false
+trim_at = '.'
+format = '[$hostname]($style) '
+style = 'green dimmed bold'
 
 #######################################################################
 #  DISABLED FOR CODESPACES ENVIRONMENTS
@@ -178,19 +186,9 @@ show_always = false
 
 [sudo]
 disabled = true
-format = '[as](dimmed) [$symbol]($style)'
-symbol = '🧙 '
-style = 'bold blue'
-allow_windows = false
 
 [battery]
 disabled = true
-full_symbol = '✅🔋'
-charging_symbol = '⚡️🔋'
-discharging_symbol = '🪫'
-unknown_symbol = '⁇🪫'
-empty_symbol = '🪫➟🔌'
-format = '[$symbol$percentage]($style) '
 
 [[battery.display]]
 threshold = 20
@@ -205,13 +203,6 @@ format = '[$symbol$number]($style) '
 symbol = '✦'
 style = 'bold blue'
 
-[hostname]
-ssh_only = true
-disabled = true
-trim_at = '.'
-format = '[$hostname]($style) in '
-style = 'green dimmed bold'
-
 #######################################################################
 #  LANGUAGES AND FRAMEWORKS
 #######################################################################
@@ -222,7 +213,6 @@ format = '([·](dimmed $style) [[$symbol]($style)($version )](dimmed $style))'
 version_format = '${raw}'
 symbol = '⬢ '
 style = 'bright-green'
-disabled = false
 not_capable_style = 'bold red'
 detect_extensions = [
     'js',
@@ -231,6 +221,9 @@ detect_extensions = [
     'ts',
     'mts',
     'cts',
+    'jsx',
+    'tsx',
+    'd.ts'
 ]
 detect_files = [
     'package.json',
@@ -257,8 +250,8 @@ detect_files = [
 detect_folders = ['Godeps']
 
 [ruby]
-disabled = false
-format = 'via [$symbol($version )]($style)'
+disabled = true
+format = '· [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '💎 '
 style = 'bold red'
