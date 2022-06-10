@@ -1,7 +1,6 @@
 # "$schema" = 'https://starship.rs/config-schema.json'
 
 format = '$time$directory$sudo$git_branch$git_status$git_metrics$git_state$git_commit$hg_branch$package$nodejs$docker_context$golang$deno$php$python$ruby$rust$line_break$status$character'
-
 right_format = '$memory_usage$status$jobs$cmd_duration'
 
 continuation_prompt = '[ › ](bright-black) '
@@ -9,52 +8,47 @@ scan_timeout = 30
 command_timeout = 1000
 add_newline = false
 
-
 #######################################################################
-#                                                                     #
-#                      PRIORITIZED MODULE OPTIONS                     #
-#                                                                     #
+#  CORE MODULES
 #######################################################################
 
 [time]
+disabled = false
 format = '(⌚ [$time]($style) [·](dimmed $style) )'
 style = 'blue dimmed'
 use_12hr = true
-disabled = false
 utc_time_offset = 'local'
 time_range = '-'
 
-[env_var]
-
 [git_branch]
+disabled = false
 format = '([·](dimmed $style) [$symbol$branch(:$remote_branch)]($style) )'
 symbol = ' '
 style = 'bold purple'
-# truncation_length = 9223372036854775807
-truncation_length = 9
+truncation_length = 9223372036854775807
 truncation_symbol = '…'
 only_attached = false
 always_show_remote = false
 ignore_branches = []
-disabled = false
 
 [git_commit]
+disabled = false
 commit_hash_length = 7
 format = '[\($hash$tag\)]($style) '
 style = 'green bold'
 only_detached = true
-disabled = false
 tag_symbol = ' 🏷  '
 tag_disabled = false
 
 [git_metrics]
+disabled = false
 added_style = 'bold green'
 deleted_style = 'bold red'
 only_nonzero_diffs = true
 format = '([\(](dimmed bright-black)([+$added]($added_style) )([-$deleted]($deleted_style))[\)](dimmed bright-black) )'
-disabled = false
 
 [git_state]
+disabled = false
 rebase = 'REBASING'
 merge = 'Ⓜ️ ' # merge = 'MERGING'
 revert = '⏮ ' # revert = 'REVERTING'
@@ -64,9 +58,9 @@ am = 'AM'
 am_or_rebase = 'AM/REBASE'
 style = 'bold yellow'
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-disabled = false
 
 [git_status]
+disabled = false
 format = '([[\[](dimmed $style)$all_status$ahead_behind[\]](dimmed $style)]($style) )'
 style = 'red bold'
 stashed = '\$'
@@ -81,76 +75,47 @@ modified = '!'
 staged = '+'
 untracked = '?'
 ignore_submodules = false
+
+[status]
 disabled = false
-
-[username]
-format = '[$user]($style) [in](dimmed italic) '
-style_root = 'red bold'
-style_user = 'yellow bold'
-show_always = true
-disabled = false
-
-
-[battery]
-full_symbol = '✅🔋'
-charging_symbol = '⚡️🔋'
-discharging_symbol = '🪫'
-unknown_symbol = '⁇🪫'
-empty_symbol = '🪫➟🔌'
-disabled = false
-format = '[$symbol$percentage]($style) '
-
-# [[battery.display]]
-# style = 'green'
-
-# [[battery.display]]
-# threshold = 20
-# style = 'red bold'
-
-
-[jobs]
-threshold = 1
-symbol_threshold = 1
-number_threshold = 2
-format = '[$symbol$number]($style) '
-symbol = '✦'
-style = 'bold blue'
-disabled = false
+format = '[$symbol $status]($style) '
+symbol = '✖'
+success_symbol = ''
+not_executable_symbol = '🚫'
+not_found_symbol = '🔍'
+sigint_symbol = '🧱'
+signal_symbol = '⚡'
+style = 'bold red'
+map_symbol = false
+recognize_signal_code = true
+pipestatus = false
+pipestatus_separator = '|'
+pipestatus_format = '\[$pipestatus\] => [$symbol$common_meaning$signal_name$maybe_int]($style)'
 
 [character]
+disabled = false
 format = '$symbol '
 success_symbol = '[❯](bold green)'
 error_symbol = '[❯](bold red)'
 vicmd_symbol = '[❮](bold green)'
-disabled = false
-
 
 [cmd_duration]
+disabled = false
+show_notifications = false
+show_milliseconds = true
 min_time = 2000
 format = '(· [$duration]($style) )'
 style = 'yellow bold'
-show_milliseconds = false
-disabled = false
-show_notifications = false
 min_time_to_notify = 45000
 
-
-[hostname]
-ssh_only = true
-trim_at = '.'
-format = '[$hostname]($style) in '
-style = 'green dimmed bold'
-disabled = false
-
 [directory]
-# truncation_length = 4
+disabled = false
 truncate_to_repo = true
 fish_style_pwd_dir_length = 4
 use_logical_path = true
 format = '[$path]($style)[$read_only]($read_only_style) '
 repo_root_format = '[$before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) '
 style = 'cyan bold'
-disabled = false
 read_only = '🔒'
 read_only_style = 'red'
 truncation_symbol = '…'
@@ -159,7 +124,6 @@ use_os_path_sep = true
 
 [directory.substitutions]
 
-
 [memory_usage]
 threshold = 40
 format = '(· $symbol[$ram( | $swap)]($style) )'
@@ -167,26 +131,95 @@ style = 'white bold dimmed'
 symbol = '🐏 '
 disabled = false
 
+[line_break]
+disabled = false
+
+[localip]
+disabled = false
+ssh_only = true
+format = '[$localipv4]($style) '
+style = 'yellow bold'
+
+[shlvl]
+disabled = false
+threshold = 2
+format = '[$symbol$shlvl]($style) '
+symbol = '↕️  '
+repeat = false
+style = 'bold yellow'
 
 [package]
+disabled = false
 format = '([·](dimmed $style) $symbol[$version](underline $style) )'
 symbol = '📦 '
 style = '99'
 display_private = true
-disabled = false
 version_format = '${raw}'
 
-
 [container]
+disabled = false
 format = '[$symbol \[$name\]]($style) '
 symbol = '🫙'
 style = 'red bold dimmed'
-disabled = false
+
+#######################################################################
+#  DISABLED FOR CODESPACES ENVIRONMENTS
+#######################################################################
+
+[env_var]
+disabled = true
+
+[username]
+disabled = true
+format = '[$user]($style) '
+style_root = 'red bold'
+style_user = 'yellow bold'
+show_always = false
+
+[sudo]
+disabled = true
+format = '[as](dimmed) [$symbol]($style)'
+symbol = '🧙 '
+style = 'bold blue'
+allow_windows = false
+
+[battery]
+disabled = true
+full_symbol = '✅🔋'
+charging_symbol = '⚡️🔋'
+discharging_symbol = '🪫'
+unknown_symbol = '⁇🪫'
+empty_symbol = '🪫➟🔌'
+format = '[$symbol$percentage]($style) '
+
+[[battery.display]]
+threshold = 20
+style = 'red bold'
+
+[jobs]
+disabled = true
+threshold = 1
+symbol_threshold = 1
+number_threshold = 2
+format = '[$symbol$number]($style) '
+symbol = '✦'
+style = 'bold blue'
+
+[hostname]
+ssh_only = true
+disabled = true
+trim_at = '.'
+format = '[$hostname]($style) in '
+style = 'green dimmed bold'
+
+#######################################################################
+#  LANGUAGES AND FRAMEWORKS
+#######################################################################
 
 [nodejs]
+disabled = false
 format = '([·](dimmed $style) [[$symbol]($style)($version )](dimmed $style))'
 version_format = '${raw}'
-# symbol = ' '
 symbol = '⬢ '
 style = 'bright-green'
 disabled = false
@@ -207,11 +240,11 @@ detect_files = [
 detect_folders = ['node_modules']
 
 [golang]
+disabled = false
 format = 'via [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '🐹 '
 style = 'bold cyan'
-disabled = false
 detect_extensions = ['go']
 detect_files = [
     'go.mod',
@@ -223,35 +256,12 @@ detect_files = [
 ]
 detect_folders = ['Godeps']
 
-[status]
-format = '[$symbol $status]($style) '
-symbol = '✖'
-success_symbol = ''
-not_executable_symbol = '🚫'
-not_found_symbol = '🔍'
-sigint_symbol = '🧱'
-signal_symbol = '⚡'
-style = 'bold red'
-map_symbol = false
-recognize_signal_code = true
-pipestatus = false
-pipestatus_separator = '|'
-pipestatus_format = '\[$pipestatus\] => [$symbol$common_meaning$signal_name$maybe_int]($style)'
-disabled = false
-
-[sudo]
-format = '[as](dimmed) [$symbol]($style)'
-symbol = '🧙 '
-style = 'bold blue'
-allow_windows = false
-disabled = true
-
 [ruby]
+disabled = false
 format = 'via [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '💎 '
 style = 'bold red'
-disabled = false
 detect_extensions = ['rb']
 detect_files = [
     'Gemfile',
@@ -264,22 +274,22 @@ detect_variables = [
 ]
 
 [rust]
+disabled = false
 format = 'via [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '🦀 '
 style = 'bold red'
-disabled = false
 detect_extensions = ['rs']
 detect_files = ['Cargo.toml']
 detect_folders = []
 
 
 [php]
+disabled = false
 format = 'via [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '🐘 '
 style = '147 bold'
-disabled = false
 detect_extensions = ['php']
 detect_files = [
     'composer.json',
@@ -288,6 +298,7 @@ detect_files = [
 detect_folders = []
 
 [python]
+disabled = false
 pyenv_version_name = false
 pyenv_prefix = 'pyenv '
 python_binary = [
@@ -299,7 +310,6 @@ format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 version_format = 'v${raw}'
 style = 'yellow bold'
 symbol = '🐍 '
-disabled = false
 detect_extensions = ['py']
 detect_files = [
     'requirements.txt',
@@ -313,11 +323,11 @@ detect_files = [
 detect_folders = []
 
 [deno]
+disabled = false
 format = 'via [$symbol($version )]($style)'
 version_format = 'v${raw}'
 symbol = '🦕 '
 style = 'green bold'
-disabled = false
 detect_extensions = []
 detect_files = [
     'deno.json',
@@ -330,11 +340,11 @@ detect_files = [
 detect_folders = []
 
 [docker_context]
+disabled = false
 symbol = '🐳 '
 style = 'blue bold'
 format = 'via [$symbol$context]($style) '
 only_with_files = true
-disabled = false
 detect_extensions = []
 detect_files = [
     'docker-compose.yml',
@@ -343,31 +353,46 @@ detect_files = [
 ]
 detect_folders = []
 
+[kubernetes]
+symbol = '☸ '
+format = '[$symbol$context( \($namespace\))]($style) in '
+style = 'cyan bold'
+disabled = false
+[kubernetes.context_aliases]
 
+[swift]
+format = 'via [$symbol($version )]($style)'
+version_format = 'v${raw}'
+symbol = '🐦 '
+style = 'bold 202'
+disabled = false
+detect_extensions = ['swift']
+detect_files = ['Package.swift']
+detect_folders = []
 
-#######################################################################
-#                                                                     #
-#                     OTHER MODULE CONFIG OPTIONS                     #
-#                                                                     #
-#######################################################################
+[terraform]
+format = 'via [$symbol$workspace]($style) '
+version_format = 'v${raw}'
+symbol = '💠 '
+style = 'bold 105'
+disabled = false
+detect_extensions = [
+    'tf',
+    'tfplan',
+    'tfstate',
+]
+detect_files = []
+detect_folders = ['.terraform']
 
 [aws]
+disabled = false
 format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
 symbol = '☁️  '
 style = 'bold yellow'
-disabled = false
 expiration_symbol = 'X'
 force_display = false
-
 [aws.region_aliases]
-
 [aws.profile_aliases]
-
-[azure]
-format = 'on [$symbol($subscription)]($style) '
-symbol = 'ﴃ '
-style = 'blue bold'
-disabled = true
 
 [cmake]
 format = 'via [$symbol($version )]($style)'
@@ -382,23 +407,6 @@ detect_files = [
 ]
 detect_folders = []
 
-
-[cobol]
-disabled = true
-
-[conda]
-disabled = true
-
-
-[crystal]
-disabled = true
-
-[dart]
-disabled = true
-
-[dotnet]
-disabled = true
-
 [elixir]
 format = 'via [$symbol($version \(OTP $otp_version\) )]($style)'
 version_format = 'v${raw}'
@@ -409,47 +417,10 @@ detect_extensions = []
 detect_files = ['mix.exs']
 detect_folders = []
 
-[elm]
-disabled = true
-
-[erlang]
-disabled = true
-
 [fill]
 style = 'bold black'
 symbol = '.'
 disabled = false
-
-[gcloud]
-disabled = true
-
-[haskell]
-format = 'via [$symbol($version )]($style)'
-version_format = 'v${raw}'
-symbol = 'λ '
-style = 'bold purple'
-disabled = false
-detect_extensions = [
-    'hs',
-    'cabal',
-    'hs-boot',
-]
-detect_files = [
-    'stack.yaml',
-    'cabal.project',
-]
-detect_folders = []
-
-[helm]
-disabled = true
-
-[hg_branch]
-symbol = ' '
-style = 'bold purple'
-format = 'on [$symbol$branch]($style) '
-truncation_length = 9223372036854775807
-truncation_symbol = '…'
-disabled = true
 
 [java]
 disabled = false
@@ -476,49 +447,55 @@ detect_files = [
 ]
 detect_folders = []
 
+
+#######################################################################
+#                          DISABLED MODULES                           #
+#######################################################################
+
+[azure]
+disabled = true
+
+[cobol]
+disabled = true
+
+[conda]
+disabled = true
+
+[crystal]
+disabled = true
+
+[dart]
+disabled = true
+
+[dotnet]
+disabled = true
+
+[elm]
+disabled = true
+
+[erlang]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[haskell]
+disabled = true
+
+[helm]
+disabled = true
+
+[hg_branch]
+disabled = true
+
 [julia]
-format = 'via [$symbol($version )]($style)'
-version_format = 'v${raw}'
-symbol = 'ஃ '
-style = 'bold purple'
-disabled = false
-detect_extensions = ['jl']
-detect_files = [
-    'Project.toml',
-    'Manifest.toml',
-]
-detect_folders = []
+disabled = true
 
 [kotlin]
 disabled = true
 
-[kubernetes]
-symbol = '☸ '
-format = '[$symbol$context( \($namespace\))]($style) in '
-style = 'cyan bold'
-disabled = false
-
-[kubernetes.context_aliases]
-
-[line_break]
-disabled = false
-
-[localip]
-ssh_only = true
-format = '[$localipv4]($style) '
-style = 'yellow bold'
-disabled = false
-
 [lua]
-format = 'via [$symbol($version )]($style)'
-version_format = 'v${raw}'
-symbol = '🌙 '
-style = 'bold blue'
-lua_binary = 'lua'
-disabled = false
-detect_extensions = ['lua']
-detect_files = ['.lua-version']
-detect_folders = ['lua']
+disabled = true
 
 [nim]
 disabled = true
@@ -530,32 +507,10 @@ disabled = true
 disabled = true
 
 [openstack]
-format = 'on [$symbol$cloud(\($project\))]($style) '
-symbol = '☁️  '
-style = 'bold yellow'
-disabled = false
+disabled = true
 
 [perl]
-format = 'via [$symbol($version )]($style)'
-version_format = 'v${raw}'
-symbol = '🐪 '
-style = '149 bold'
-disabled = false
-detect_extensions = [
-    'pl',
-    'pm',
-    'pod',
-]
-detect_files = [
-    'Makefile.PL',
-    'Build.PL',
-    'cpanfile',
-    'cpanfile.snapshot',
-    'META.json',
-    'META.yml',
-    '.perl-version',
-]
-detect_folders = []
+disabled = true
 
 [pulumi]
 disabled = true
@@ -569,52 +524,14 @@ disabled = true
 [scala]
 disabled = true
 
-[shlvl]
-threshold = 2
-format = '[$symbol$shlvl]($style) '
-symbol = '↕️  '
-repeat = false
-style = 'bold yellow'
-disabled = false
-
 [singularity]
-symbol = ''
-format = '[$symbol\[$env\]]($style) '
-style = 'blue bold dimmed'
-disabled = false
-
-[swift]
-format = 'via [$symbol($version )]($style)'
-version_format = 'v${raw}'
-symbol = '🐦 '
-style = 'bold 202'
-disabled = false
-detect_extensions = ['swift']
-detect_files = ['Package.swift']
-detect_folders = []
-
-[terraform]
-format = 'via [$symbol$workspace]($style) '
-version_format = 'v${raw}'
-symbol = '💠 '
-style = 'bold 105'
-disabled = false
-detect_extensions = [
-    'tf',
-    'tfplan',
-    'tfstate',
-]
-detect_files = []
-detect_folders = ['.terraform']
+disabled = true
 
 [vagrant]
 disabled = true
 
 [vcsh]
-symbol = ''
-style = 'bold yellow'
-format = 'vcsh [$symbol$repo]($style) '
-disabled = false
+disabled = true
 
 [vlang]
 disabled = true
