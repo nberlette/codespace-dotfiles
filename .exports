@@ -59,7 +59,7 @@ export GO15VENDOREXPERIMENT=1
 export DOCKER_CONTENT_TRUST=1
 export XDG_DATA_DIRS=/usr/share/
 # export PNPM homedir to unify the virtual dependency store
-export PNPM_HOME="${PNPM_HOME:-"$(dirname -- "$(which pnpm)")"}"
+export PNPM_HOME="${PNPM_HOME:-"$(dirname -- "$(which pnpm &>/dev/null || $HOME/.local/pnpm/bin/pnpm)")"}"
 # do not automatically cleanup after installing homebrew packages
 export HOMEBREW_NO_INSTALL_CLEANUP=1
 # do not show env hints during homebrew install process

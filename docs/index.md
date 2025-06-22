@@ -1,9 +1,9 @@
 ---
-title: 'dotfiles.ml'
+title: '@nberlette/dotfiles'
 home: true
 heroImage: /hero.jpg
 heroAlt: 'nberlette/dotfiles'
-heroText: 'dotfiles.ml'
+heroText: '@nberlette/dotfiles'
 tagline: One config to rule them all.
 actionText: Get Started
 actionLink: /#gitpod-automated-install

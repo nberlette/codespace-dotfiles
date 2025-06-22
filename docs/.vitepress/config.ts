@@ -75,7 +75,7 @@ const nav: DefaultTheme.NavItem[] = [
 
 export default defineConfig({
   lang: 'en-US',
-  title: 'dotfiles.ml',
+  title: 'dotfiles.berlette.com',
   base: '/',
   head,
   themeConfig: {

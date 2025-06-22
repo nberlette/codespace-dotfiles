@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## ------------------------------------------------------------------------ ##
-##  .functions                               Nicholas Berlette, 2022-05-21  ##
+##  .functions                               Nicholas Berlette, 2025-06-21  ##
 ## ------------------------------------------------------------------------ ##
 ##  https://github.com/nberlette/dotfiles/blob/main/.functions              ##
 ## ------------------------------------------------------------------------ ##
@@ -16,7 +16,7 @@ function __status() {
   }
   rst="$(tput sgr0)"
   if [[ "$label" =~ ^(FAIL(URE)?|ERR(OR)?|FATAL|CRITICAL|EXCEPT(ION)?|THROWN?|FAULT)$ ]]; then
-    color="$(osc 48 2 230 0 0 && wht)"
+    color=$'\e[48;2;230;0;0m\e[38;2;255;255;255m'
     printf "${color-} %s ${rst-} %s\\n" "$label" "$*" 1>&2
     return 1
   elif [[ "$label" =~ ^(SUCCE(EDED|SS)|OK(AY)?|DONE|COMPLETED?|FINISH(ED)?|GOOD|GREAT)$ ]]; then
@@ -137,7 +137,7 @@ fi
 function commit() {
   git commit --gpg-sign "$@" 2>/dev/null || {
     (echo "" | gpg --clear-sign --pinentry-mode loopback >/dev/null) &&
-      status "important" "GPG is ready to sign commits. Attempting signature..." &&
+      status important "GPG ready to sign commits. Attempting to sign..." &&
       git commit --gpg-sign "$@"
   }
 }
@@ -186,11 +186,8 @@ function targz() {
 
 # Determine size of a file or total size of a directory
 function fs() {
-  if du -b /dev/null &>/dev/null; then
-    local arg=-sbhLc
-  else
-    local arg=-shLc
-  fi
+  local arg=-shLc
+  du -b /dev/null &>/dev/null && arg=-sbhLc;
   # shellcheck disable=SC2199
   if [ -n "$*" ]; then du "$arg" -- "$@"; else du "$arg" -- .[^.]* *; fi
 }
@@ -209,11 +206,11 @@ alias diff=gitdiff
 
 # Create a data URL from a file
 function dataurl() {
-  local arg nocopy mimeType charSet data verbose
-  nocopy=0
-  verbose=0
-  mimeType=""
-  charSet="utf-8"
+  local arg data
+  local nocopy=0
+  local verbose=0
+  local mimeType=""
+  local charSet="utf-8"
 
   while (($# > 0)); do
     arg="$(echo -n "${1-}" | tr '[:lower:]' '[:upper:]')"
@@ -285,10 +282,9 @@ function server() {
 
 # Compare original and gzipped file size
 function gz() {
-  local origsize gzipsize ratio
-  origsize=$(wc -c <"$1")
-  gzipsize=$(gzip -c "$1" | wc -c)
-  ratio=$(echo "$gzipsize * 100 / $origsize" | bc -l)
+  local origsize=$(wc -c <"$1")
+  local gzipsize=$(gzip -c "$1" | wc -c)
+  local ratio=$(echo "$gzipsize * 100 / $origsize" | bc -l)
   printf "orig: %d bytes\\n" "$origsize"
   printf "gzip: %d bytes (%2.2f%%)\\n" "$gzipsize" "$ratio"
 }
@@ -354,9 +350,8 @@ function o() {
 
 # `l` integrates file-detection with `ls`. If you use `l` on a file rather than a folder, its automatically opened with its respective editor.
 function l() {
-  local path cmd
-  path=.
-  cmd=less
+  local path=.
+  local cmd=less
 
   if (($# > 0)); then
     if [[ "$1" =~ ^[-]{0,2}((vs)?c(ode)?|vs?)$ ]]; then
@@ -402,7 +397,7 @@ function __mancolors() {
     LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
     LESS_TERMCAP_ue="$(printf '\e[0m')" \
     LESS_TERMCAP_us="$(printf '\e[1;32m')" \
-    man "$@"
+    \man "$@"
 }
 alias man=__mancolors
 
@@ -415,7 +410,7 @@ function __lesscolors() {
     LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
     LESS_TERMCAP_ue="$(printf '\e[0m')" \
     LESS_TERMCAP_us="$(printf '\e[1;32m')" \
-    less "$@"
+    \less "$@"
 }
 alias less=__lesscolors
 
@@ -428,6 +423,6 @@ function __morecolors() {
     LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
     LESS_TERMCAP_ue="$(printf '\e[0m')" \
     LESS_TERMCAP_us="$(printf '\e[1;32m')" \
-    more --use-color "$@"
+    \more --use-color "$@"
 }
 alias more=__morecolors

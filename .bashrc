@@ -1,85 +1,114 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-## ---------------------------------------------------------------------------------- ##
-## .bashrc                                              Nicholas Berlette, 2022-06-03 ##
-## ---------------------------------------------------------------------------------- ##
-##         https://github.com/nberlette/codespace-dotfiles/blob/main/.bashrc          ##
-## ---------------------------------------------------------------------------------- ##
-##                    MIT © Nicholas Berlette <nick@berlette.com>                     ##
-## ---------------------------------------------------------------------------------- ##
+## ------------------------------------------------------------------------- ##
+## .bashrc                                                        2025-06-21 ##
+## ------------------------------------------------------------------------- ##
+##  Copyright (c) 2021-2025 Nicholas Berlette. All rights reserved.          ##
+##  Distributed under the MIT License: https://nick.mit-license.org/2021     ##
+## ------------------------------------------------------------------------- ##
 
+### Environment variables ###
 export DOTFILES_PREFIX="$HOME/dotfiles"
 export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
 export PATH="$HOMEBREW_PREFIX/bin:$PATH"
 
-# source the .path file to make sure all programs and functions are accessible
-# this also sources our core.sh file. and if it cant be found, it fails. HARD.
+### Source custom PATH and core scripts ###
 if [ -r ~/.path ]; then
-  # shellcheck source=/dev/null
-  { source ~/.path 2>/dev/null || source "${DOTFILES_PREFIX:-"$HOME/dotfiles"}/.path" 2>/dev/null; } || exit $?;
+  { source ~/.path 2>/dev/null \
+    || source "${DOTFILES_PREFIX:-"$HOME/dotfiles"}/.path" 2>/dev/null; } \
+    || exit $?
 fi
-  
-# make sure our gitconfig is up to date
-# user.name, user.email, user.signingkey
+
+### Ensure Git global user config ###
 if [ -z "$(git config --global user.name)" ] || [ -z "$(git config --global user.email)" ]; then
-  if [ -n "$GIT_COMMITTER_NAME" ] || [ -n "$GIT_AUTHOR_NAME" ]; then
-    git config --global user.name "${GIT_COMMITTER_NAME:-"$GIT_AUTHOR_NAME"}"
-  fi
-  if [ -n "$GIT_COMMITTER_EMAIL" ] || [ -n "$GIT_AUTHOR_EMAIL" ]; then
-    git config --global user.email "${GIT_COMMITTER_EMAIL:-"$GIT_AUTHOR_EMAIL"}"
-  fi
+  [ -n "$GIT_COMMITTER_NAME" ] && git config --global user.name "$GIT_COMMITTER_NAME"
+  [ -n "$GIT_COMMITTER_EMAIL" ] && git config --global user.email "$GIT_COMMITTER_EMAIL"
   if [ -z "$(git config --global user.signingkey)" ]; then
-    git config --global user.signingkey "${GPG_KEY_ID:-"${GIT_COMMITTER_EMAIL:-"$GIT_AUTHOR_EMAIL"}"}"
+    git config --global user.signingkey \
+      "${GPG_KEY_ID:-"${GIT_COMMITTER_EMAIL:-"$GIT_AUTHOR_EMAIL"}"}"
   fi
 fi
 
-# install homebrew 
-if ! which brew &> /dev/null; then 
+### Helper for curl-based installs ###
+_install() {
+  local cmd=$1 url=$2 installer=${3:-sh}
+  shift 3; local args=( "$@" )
+  if ! command -v "$cmd" &>/dev/null; then
+    curl -fsSL "$url" | $installer "${args[@]}"
+  fi
+}
+
+### Install Homebrew and bundle ###
+if ! command -v brew &>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
-
-# install pnpm
-if ! which pnpm &> /dev/null; then
-  curl -fsSL https://get.pnpm.io/install.sh | sh - 2>&1
-  # double check that pnpm is installed, then install/setup node v16.15.0
-  which pnpm &>/dev/null && pnpm env use --global "16.15.0" 2>/dev/null
-fi
-
-# 
-if which brew &>/dev/null; then
+if command -v brew &>/dev/null; then
   eval "$(brew shellenv)"
-  
-  # [see .Brewfile] install starship prompt and other goodies
-  if ! which starship &>/dev/null && [ -r "$HOME/.Brewfile" ]; then
-    brew bundle install --global 2>/dev/null
-  fi
+  [ -r "$HOME/.Brewfile" ] && brew bundle install --global 2>/dev/null
 fi
 
-# include all files in .bashrc.d folder
+### Install pnpm ###
+_install pnpm https://get.pnpm.io/install.sh sh -
+[ -x "$(command -v pnpm)" ] && pnpm env use --global latest 2>/dev/null
+
+### Install Deno ###
+_install deno https://deno.land/install.sh sh -y
+
+### Install Bun ###
+_install bun https://bun.sh/install sh -
+
+### Install GitHub CLI ###
+if ! command -v gh &>/dev/null; then
+  brew install gh &>/dev/null
+fi
+
+### Install Rust (cargo via rustup) ###
+_install cargo https://sh.rustup.rs sh -y
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+### Helper for installing shell completions ###
+_install_completion() {
+  local cmd=$1 cmp="/etc/bash_completion.d/${cmd}.bash"
+  if command -v "$cmd" &>/dev/null && [ ! -s "$cmp" ]; then
+    sudo touch "$cmp"
+    sudo chown "${USER}:${USER}" "$cmp"
+    "$cmd" completions bash > "$cmp"
+  fi
+}
+
+### Install completions ###
+_install_completion deno
+_install_completion bun
+_install_completion gh
+_install_completion cargo
+
+### Load additional bash fragments ###
 src ~/.bashrc.d/*
 
-# import all vars from .env + .extra into current environment
+### Import environment files ###
 srx ~/.{env,extra} "${PWD-}"/.{env,env.d}
 
-# include our core bash environment
+### Source core bash functions and aliases ###
 src ~/.{exports,functions,bash_aliases}
 
-# bash completion
+### Homebrew bash completions ###
 src "$HOMEBREW_PREFIX/etc/bash_completion.d" 2>/dev/null
 
-# lesspipe
-which lesspipe &>/dev/null && eval "$(SHELL="$(which bash)" lesspipe)"
+### lesspipe support ###
+command -v lesspipe &>/dev/null && eval "$(SHELL="$(which bash)" lesspipe)"
 
-# dircolors: attractive color coded output for ls, grep, etc.
-if which dircolors &>/dev/null; then
-  [ -r ~/.dircolors ] && eval "$(dircolors -b ~/.dircolors 2>/dev/null)" || eval "$(dircolors -b)"
+### dircolors for ls/grep ###
+if command -v dircolors &>/dev/null; then
+  [ -r ~/.dircolors ] \
+    && eval "$(dircolors -b ~/.dircolors 2>/dev/null)" \
+    || eval "$(dircolors -b)"
 fi
 
-# export PATH="${HOMEBREW_PREFIX:+"$HOMEBREW_PREFIX/bin:"}$PATH"
-# clean up $PATH
-if hash dedupe_path &>/dev/null; then 
-  export PATH="$(dedupe_path)"; 
+### Deduplicate PATH ###
+if hash dedupe_path &>/dev/null; then
+  export PATH="$(dedupe_path)"
 fi
 
-eval "$(starship init bash)"
+### Starship prompt ###
+command -v starship &>/dev/null && eval "$(starship init bash)"
