@@ -4,7 +4,7 @@ These are just my personal dotfiles that I've converted into a starter template 
 
 ## Gitpod: Automated Install
 
-The setup is really simple - just add this repository URL to your [Preferences in Gitpod's Dashboard](https://gitpod.io/preferences). 
+The setup is really simple - just add this repository URL to your [Preferences in Gitpod's Dashboard](https://gitpod.io/preferences).
 
 > Screenshot of the dotfiles option's location in the dashboard is included below.
 
@@ -13,7 +13,7 @@ Whenever you fire up a new workspace, Gitpod will clone and install the dotfiles
 **Open your [Gitpod Dashboard](https://gitpod.io/dashboard)**, and add this url to the field at the **bottom of the page**:
 
        https://github.com/nberlette/dotfiles.git
-       
+
 All the files will be located in `~/.dotfiles` (`/home/gitpod/.dotfiles`) inside a Gitpod Workspace. You'll nice the `.git` folder is still intact, giving you access to the commit history and remote origin, so it's really hassle-free to commit and push some changes right from with a running workspace!
 
 ### Updating while in a running workspace
@@ -37,11 +37,11 @@ ls .*.log
 # .install.1650325105.log
 ```
 
-### Location in the Gitpod Dashboard 
+### Location in the Gitpod Dashboard
 
 <img width="600" alt="Screen Shot 2022-04-18 at 4 24 54 PM" src="https://user-images.githubusercontent.com/11234104/163892596-e240193e-9fe0-442c-8f71-329c6d69dfe3.png">
 
----  
+---
 
 ## Manual Installation
 
@@ -66,4 +66,3 @@ cd ~/.dotfiles && ./install.sh
 ---
 
 MIT © [Nicholas Berlette](https://github.com/nberlette). Overly inspired by [`jessfraz/dotfiles`](https://github.com/jessfraz/dotfiles). Thanks Jess!
-
